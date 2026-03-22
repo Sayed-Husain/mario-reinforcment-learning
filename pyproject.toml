@@ -1,0 +1,74 @@
+[project]
+name = "mario-rl"
+version = "0.1.0"
+description = "Reinforcement learning agents that learn to play Super Mario Bros — comparing DQN, PPO, and curriculum learning"
+requires-python = ">=3.10,<3.11"
+license = "MIT"
+authors = [{ name = "Sayed Husain" }]
+
+dependencies = [
+    # RL environment — the NES emulator + Mario ROM wrapper
+    "gym==0.26.2",
+    "gym-super-mario-bros==7.4.0",
+    "nes-py==8.2.1",
+
+    # Deep learning — PyTorch is the industry standard for RL research
+    "torch>=2.0.0,<3",
+    "torchvision>=0.15.0,<1",
+
+    # Stable-Baselines3 — battle-tested RL algorithm implementations (we use it for PPO)
+    "stable-baselines3>=2.1.0,<3",
+    "shimmy>=1.0.0,<2",       # bridges old gym envs to gymnasium (SB3 may need this)
+
+    # Data and visualization
+    "numpy>=1.24.0,<2",       # numpy 2.x breaks nes-py, so we cap it
+    "matplotlib>=3.7.0",
+    "seaborn>=0.12.0",
+    "Pillow>=9.0.0",
+
+    # Config and utilities
+    "PyYAML>=6.0",
+    "opencv-python>=4.7.0",   # image processing for frame preprocessing
+    "imageio>=2.30.0",        # saving gameplay as GIF/video
+    "imageio-ffmpeg>=0.4.8",  # ffmpeg backend for imageio
+    "tqdm>=4.65.0",           # progress bars during training
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.4.0",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes (unused imports, undefined names, etc.)
+    "I",   # isort (import ordering)
+    "W",   # pycodestyle warnings
+]
+ignore = [
+    "E501",  # line too long — we set line-length above, ruff format handles the rest
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["mario_rl"]
+
+[tool.uv]
+# PyTorch CUDA builds are hosted on their own index, not PyPI.
+# This tells uv to look there for torch/torchvision.
+[[tool.uv.index]]
+name = "pytorch-cu124"
+url = "https://download.pytorch.org/whl/cu124"
+explicit = true
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cu124" }]
+torchvision = [{ index = "pytorch-cu124" }]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

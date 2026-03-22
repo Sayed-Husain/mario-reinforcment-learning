@@ -1,0 +1,29 @@
+name: CI
+
+# Run on every push and pull request
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: Check out the code
+      - uses: actions/checkout@v4
+
+      # Step 2: Install uv (same tool we use locally)
+      - uses: astral-sh/setup-uv@v4
+
+      # Step 3: Install Python 3.10 (reads .python-version automatically)
+      - uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
+
+      # Step 4: Install dev dependencies (includes ruff)
+      - run: uv sync --group dev
+
+      # Step 5: Run the linter
+      - run: uv run ruff check .

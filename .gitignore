@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+wheels/
+
+# Virtual environments
+.venv/
+
+# PyTorch model checkpoints (large binary files — use GitHub Releases instead)
+checkpoints/
+*.pt
+*.pth
+*.zip
+
+# Training metrics (regenerated per run)
+metrics/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# uv
+uv.lock
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Site build artifacts
+site/node_modules/
+site/dist/
+gh-pages-build/
