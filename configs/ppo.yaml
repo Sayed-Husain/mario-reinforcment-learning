@@ -1,0 +1,34 @@
+# PPO (Proximal Policy Optimization) training configuration
+# A modern (2017) policy gradient algorithm by OpenAI
+# Uses Stable-Baselines3's battle-tested implementation
+
+algorithm: ppo
+
+env:
+  world: 1
+  stage: 1
+  version: 0
+  action_space: SIMPLE_MOVEMENT
+  frame_skip: 4
+  frame_stack: 4
+  frame_size: 84
+  render: false
+
+training:
+  total_timesteps: 2_000_000
+  learning_rate: 0.00025
+  batch_size: 64              # PPO typically uses larger batches
+  gamma: 0.99
+  save_freq: 100_000
+  log_freq: 1_000
+  checkpoint_dir: checkpoints
+  metrics_dir: metrics
+
+ppo:
+  n_steps: 2048               # Steps collected per rollout before each update
+  n_epochs: 10                # Passes over the collected data per update
+  clip_range: 0.2             # PPO's key idea: limit how much the policy can change per update
+  gae_lambda: 0.95            # GAE smoothing  - balances bias vs variance in advantage estimation
+  ent_coef: 0.01              # Entropy bonus  - prevents the policy from becoming too deterministic
+  vf_coef: 0.5                # How much to weight the value function loss
+  n_envs: 4                   # Parallel environments  - PPO thrives on parallelism

@@ -1,0 +1,33 @@
+# DQN (Deep Q-Network) training configuration
+# Based on DeepMind's 2015 "Human-level control through deep RL" paper
+# with Double DQN improvement (2016) to reduce Q-value overestimation
+
+algorithm: dqn
+
+env:
+  world: 1
+  stage: 1
+  version: 0               # Standard enemies and blocks
+  action_space: SIMPLE_MOVEMENT  # 7 actions: right, right+jump, right+sprint, etc.
+  frame_skip: 4             # Repeat action for 4 frames
+  frame_stack: 4            # Stack 4 frames for motion perception
+  frame_size: 84            # 84x84 pixels (standard since DQN paper)
+  render: false             # Set to true to watch during training (much slower)
+
+training:
+  total_timesteps: 2_000_000  # ~2M steps ≈ 2-3 hours on GTX 1080
+  learning_rate: 0.00025      # Adam optimizer LR (from DQN paper)
+  batch_size: 32              # Samples per gradient update
+  gamma: 0.99                 # Discount factor  - values future reward almost as much as now
+  save_freq: 100_000          # Save checkpoint every 100k steps
+  log_freq: 1_000             # Log metrics every 1k steps
+  checkpoint_dir: checkpoints
+  metrics_dir: metrics
+
+dqn:
+  replay_buffer_size: 100_000  # Store last 100k transitions
+  epsilon_start: 1.0           # Start 100% random (pure exploration)
+  epsilon_end: 0.02            # End at 2% random (mostly exploit, little explore)
+  epsilon_decay: 100_000       # Linearly decay over 100k steps
+  target_update_freq: 10_000   # Copy online net → target net every 10k steps
+  double_dqn: true             # Use Double DQN (more stable learning)
