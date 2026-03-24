@@ -1,0 +1,37 @@
+# Rainbow-lite DQN configuration
+# Combines Double DQN + Prioritized Replay + Dueling Network
+# A subset of the full Rainbow (Hessel et al. 2018) that gives most of the gains
+
+algorithm: dqn
+
+env:
+  world: 1
+  stage: 1
+  version: 0
+  action_space: SIMPLE_MOVEMENT
+  frame_skip: 4
+  frame_stack: 4
+  frame_size: 84
+  render: false
+
+training:
+  total_timesteps: 2_000_000
+  learning_rate: 0.00025
+  batch_size: 32
+  gamma: 0.99
+  save_freq: 100_000
+  log_freq: 1_000
+  checkpoint_dir: checkpoints
+  metrics_dir: metrics
+
+dqn:
+  replay_buffer_size: 100_000
+  epsilon_start: 1.0
+  epsilon_end: 0.02
+  epsilon_decay: 100_000
+  target_update_freq: 10_000
+  double_dqn: true
+  prioritized_replay: true     # Sample important transitions more often
+  priority_alpha: 0.6          # Prioritization exponent
+  priority_beta_start: 0.4     # IS correction, annealed to 1.0
+  dueling: true                # Separate value and advantage streams
