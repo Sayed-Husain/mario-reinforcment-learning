@@ -6,11 +6,13 @@ import ModelInfo from './components/ModelInfo'
 import Pipeline from './components/Pipeline'
 import CompareView from './components/CompareView'
 
+const BASE = import.meta.env.BASE_URL
+
 const MODELS = {
   rainbow: {
     label: 'Rainbow DQN',
-    video: '/videos/rainbow.mp4',
-    data: '/data/rainbow.json',
+    video: `${BASE}videos/rainbow.mp4`,
+    data: `${BASE}data/rainbow.json`,
     color: '#e7413c',
     clearRate: 45,
     avgDist: 2602,
@@ -22,8 +24,8 @@ const MODELS = {
   },
   dqn: {
     label: 'DQN',
-    video: '/videos/dqn.mp4',
-    data: '/data/dqn.json',
+    video: `${BASE}videos/dqn.mp4`,
+    data: `${BASE}data/dqn.json`,
     color: '#6b8cff',
     clearRate: 35,
     avgDist: 2518,
@@ -35,8 +37,8 @@ const MODELS = {
   },
   ppo: {
     label: 'PPO',
-    video: '/videos/ppo.mp4',
-    data: '/data/ppo.json',
+    video: `${BASE}videos/ppo.mp4`,
+    data: `${BASE}data/ppo.json`,
     color: '#ffa726',
     clearRate: 0,
     avgDist: 2026,
@@ -139,7 +141,7 @@ export default function App() {
               Compare
             </button>
           </div>
-          <a className="github-link" href="https://github.com/YOUR_USERNAME/mario-reinforcment-learning" target="_blank" rel="noreferrer">
+          <a className="github-link" href="https://github.com/Sayed-Husain/mario-reinforcment-learning" target="_blank" rel="noreferrer">
             GitHub
           </a>
         </div>
