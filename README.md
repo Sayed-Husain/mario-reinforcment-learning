@@ -95,6 +95,16 @@ Each step in this pipeline has a specific purpose:
 
 - **Frame stacking (4)**: this is the subtle one. A single frame is a photograph. There's no way to distinguish a Goomba moving left from one moving right, or to tell whether Mario is ascending or descending from a jump. Stacking 4 consecutive frames gives the network something closer to a short video clip, and from that it can infer velocity and direction. Without this, the agent can't time jumps properly.
 
+### Network Architecture
+
+The agent needs a function that maps pixels to actions. Traditional approaches would require hand-engineering features (edge detection, object templates, spatial heuristics), then building a decision system on top. Deep learning skips this entirely. A convolutional neural network learns to extract its own features directly from raw pixels, discovering whatever spatial patterns are most useful for maximizing reward.
+
+We use the same CNN architecture from the original DQN paper: three convolutional layers that progressively reduce spatial resolution while increasing feature depth, followed by fully connected layers that map the extracted features to action values. The convolutional backbone is shared across all three DQN variants (vanilla, Double, Rainbow). The only architectural difference is in the final layers: the standard head outputs Q-values directly, while the dueling variant splits into separate value and advantage streams before recombining.
+
+![Network architecture](assets/architecture.svg)
+
+At 1.7M parameters, the network is small by modern standards. This is intentional. The input is only 84x84 grayscale, and the action space is 7 discrete actions. A larger network would overfit faster without proportionally better results. With more compute budget, the gains would come from training longer or adding more Rainbow components (distributional RL, noisy exploration) rather than scaling the network itself.
+
 ### Algorithms
 
 <details>
